@@ -1,0 +1,6 @@
+{
+  "name": "Markets Overview",
+  "description": "Real-time global markets tracking platform for indices, equities, cryptocurrencies, futures, and forex.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
