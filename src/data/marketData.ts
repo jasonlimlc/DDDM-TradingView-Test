@@ -1,4 +1,4 @@
-import { MarketAsset, NewsItem, MarketStatus, EconomicEvent, CandleData } from '../types';
+import { MarketAsset, NewsItem, MarketStatus, EconomicEvent, CandleData, OrderBookEntry } from '../types';
 
 export const US_FLAG_URL = "https://lh3.googleusercontent.com/aida-public/AB6AXuBUxIavamj3de2hZHDmfEhvnf9RYDh7dNAiWmPD_4fz5rKsSNgXvl5A0TzWNwLGyKa3Xg7Q11XOI5U5anrmTQYtMih2tc_u4ETCJcwoSP0CCSRf25IlR3QcOIc2JVGnsCvLXLDeVHy4Z7UwFm0UV94Nm4p0YiGo2D0zd769MC_FcxypPEOZnp1Rb63kyFWFQ__P4U8vTNbklhINozeblOB54n9VMITrZ1x8OapCxQgDAMx36ciMNHPk";
 
@@ -20,12 +20,17 @@ export const INITIAL_ASSETS: MarketAsset[] = [
     openPrice: 5950.85,
     volume: '2.84B',
     marketCap: '$45.8T',
+    marketCapRaw: 45800,
     peRatio: 26.4,
+    beta: 1.0,
+    rsi14: 64.2,
+    analystRating: 'Buy',
+    targetPrice: 6200.00,
     week52High: 6025.50,
     week52Low: 4953.56,
     badge: {
       text: '500',
-      bgClass: 'bg-[#F23645]', // Red badge
+      bgClass: 'bg-[#F23645]',
       textClass: 'text-white'
     },
     description: 'The Standard and Poor\'s 500 is a stock market index tracking the stock performance of 500 of the largest companies listed on stock exchanges in the United States.',
@@ -48,12 +53,17 @@ export const INITIAL_ASSETS: MarketAsset[] = [
     openPrice: 21000.40,
     volume: '4.12B',
     marketCap: '$24.2T',
+    marketCapRaw: 24200,
     peRatio: 31.8,
+    beta: 1.22,
+    rsi14: 68.5,
+    analystRating: 'Strong Buy',
+    targetPrice: 22500.00,
     week52High: 21350.25,
     week52Low: 16973.94,
     badge: {
       text: '100',
-      bgClass: 'bg-[#004ee8]', // Blue badge
+      bgClass: 'bg-[#004ee8]',
       textClass: 'text-white'
     },
     description: 'The Nasdaq-100 is a stock market index made up of 101 equity securities issued by 100 of the largest non-financial companies listed on the Nasdaq stock market.',
@@ -78,12 +88,17 @@ export const INITIAL_ASSETS: MarketAsset[] = [
     openPrice: 38922.44,
     volume: '1.45B',
     marketCap: '¥850T',
+    marketCapRaw: 5600,
     peRatio: 16.8,
+    beta: 0.85,
+    rsi14: 48.3,
+    analystRating: 'Hold',
+    targetPrice: 40500.00,
     week52High: 42426.77,
     week52Low: 31458.42,
     badge: {
       text: '225',
-      bgClass: 'bg-[#004ee8]', // Blue badge
+      bgClass: 'bg-[#004ee8]',
       textClass: 'text-white'
     },
     description: 'The Nikkei 225 is a price-weighted index composed of Japan\'s top 225 blue-chip companies traded on the Tokyo Stock Exchange.',
@@ -106,12 +121,17 @@ export const INITIAL_ASSETS: MarketAsset[] = [
     openPrice: 8305.90,
     volume: '890M',
     marketCap: '£2.1T',
+    marketCapRaw: 2650,
     peRatio: 13.4,
+    beta: 0.72,
+    rsi14: 53.1,
+    analystRating: 'Buy',
+    targetPrice: 8650.00,
     week52High: 8487.62,
     week52Low: 7384.14,
     badge: {
       text: '100',
-      bgClass: 'bg-[#434656]', // Outline/Grey badge
+      bgClass: 'bg-[#434656]',
       textClass: 'text-white'
     },
     description: 'The FTSE 100 Index is a share index of the 100 companies listed on the London Stock Exchange with the highest market capitalization.',
@@ -134,7 +154,11 @@ export const INITIAL_ASSETS: MarketAsset[] = [
     openPrice: 19357.80,
     volume: '620M',
     marketCap: '€1.8T',
+    marketCapRaw: 1950,
     peRatio: 14.9,
+    rsi14: 59.4,
+    analystRating: 'Buy',
+    targetPrice: 20200.00,
     week52High: 19674.68,
     week52Low: 14630.21,
     badge: {
@@ -161,7 +185,11 @@ export const INITIAL_ASSETS: MarketAsset[] = [
     openPrice: 20115.40,
     volume: '1.92B',
     marketCap: 'HK$32T',
+    marketCapRaw: 4100,
     peRatio: 9.8,
+    rsi14: 62.1,
+    analystRating: 'Buy',
+    targetPrice: 22000.00,
     week52High: 23241.74,
     week52Low: 14794.16,
     badge: {
@@ -190,12 +218,17 @@ export const INITIAL_ASSETS: MarketAsset[] = [
     openPrice: 138.20,
     volume: '64.8M',
     marketCap: '$3.52T',
+    marketCapRaw: 3520,
     peRatio: 58.4,
     dividendYield: '0.03%',
+    beta: 1.68,
+    rsi14: 72.4,
+    analystRating: 'Strong Buy',
+    targetPrice: 175.00,
     week52High: 149.77,
     week52Low: 45.41,
     badge: {
-      bgClass: 'bg-[#14532d]', // Green 900 circle
+      bgClass: 'bg-[#14532d]',
       customColor: '#166534'
     },
     description: 'NVIDIA Corporation designs graphics processing units for gaming and professional markets, as well as system on a chip units for the mobile computing and automotive market, leading the AI compute revolution.',
@@ -218,12 +251,17 @@ export const INITIAL_ASSETS: MarketAsset[] = [
     openPrice: 236.05,
     volume: '48.2M',
     marketCap: '$3.58T',
+    marketCapRaw: 3580,
     peRatio: 36.1,
     dividendYield: '0.43%',
+    beta: 0.94,
+    rsi14: 51.8,
+    analystRating: 'Buy',
+    targetPrice: 260.00,
     week52High: 237.49,
     week52Low: 164.08,
     badge: {
-      bgClass: 'bg-black', // Black circle
+      bgClass: 'bg-black',
       customColor: '#000000'
     },
     description: 'Apple Inc. designs, manufactures, and markets smartphones, personal computers, tablets, wearables, and accessories, and sells a variety of related services.',
@@ -246,8 +284,13 @@ export const INITIAL_ASSETS: MarketAsset[] = [
     openPrice: 425.30,
     volume: '18.9M',
     marketCap: '$3.18T',
+    marketCapRaw: 3180,
     peRatio: 34.2,
     dividendYield: '0.78%',
+    beta: 1.15,
+    rsi14: 58.6,
+    analystRating: 'Strong Buy',
+    targetPrice: 490.00,
     week52High: 468.35,
     week52Low: 366.50,
     badge: {
@@ -273,8 +316,13 @@ export const INITIAL_ASSETS: MarketAsset[] = [
     openPrice: 327.30,
     volume: '92.4M',
     marketCap: '$1.09T',
+    marketCapRaw: 1090,
     peRatio: 112.5,
     dividendYield: 'N/A',
+    beta: 2.31,
+    rsi14: 76.8,
+    analystRating: 'Buy',
+    targetPrice: 380.00,
     week52High: 358.64,
     week52Low: 138.80,
     badge: {
@@ -300,8 +348,13 @@ export const INITIAL_ASSETS: MarketAsset[] = [
     openPrice: 180.55,
     volume: '22.1M',
     marketCap: '$2.24T',
+    marketCapRaw: 2240,
     peRatio: 23.8,
     dividendYield: '0.44%',
+    beta: 1.08,
+    rsi14: 61.2,
+    analystRating: 'Strong Buy',
+    targetPrice: 205.00,
     week52High: 193.31,
     week52Low: 129.40,
     badge: {
@@ -329,15 +382,19 @@ export const INITIAL_ASSETS: MarketAsset[] = [
     openPrice: 94270.00,
     volume: '$48.5B',
     marketCap: '$1.91T',
+    marketCapRaw: 1910,
+    rsi14: 70.5,
+    analystRating: 'Strong Buy',
+    targetPrice: 120000.00,
     week52High: 104500.00,
     week52Low: 49000.00,
     badge: {
       text: '₿',
-      bgClass: 'bg-[#f7931a]', // Bitcoin orange
+      bgClass: 'bg-[#f7931a]',
       textClass: 'text-white'
     },
     description: 'Bitcoin is the first decentralized digital cryptocurrency enabling instant peer-to-peer payments across borders without intermediaries.',
-    sector: 'Digital Currency'
+    sector: 'Digital Store of Value'
   },
   {
     id: 'eth',
@@ -355,6 +412,10 @@ export const INITIAL_ASSETS: MarketAsset[] = [
     openPrice: 2683.40,
     volume: '$22.8B',
     marketCap: '$330.4B',
+    marketCapRaw: 330,
+    rsi14: 63.8,
+    analystRating: 'Buy',
+    targetPrice: 3500.00,
     week52High: 4093.00,
     week52Low: 2110.00,
     badge: {
@@ -381,6 +442,10 @@ export const INITIAL_ASSETS: MarketAsset[] = [
     openPrice: 187.20,
     volume: '$7.4B',
     marketCap: '$94.2B',
+    marketCapRaw: 94,
+    rsi14: 74.2,
+    analystRating: 'Strong Buy',
+    targetPrice: 260.00,
     week52High: 260.06,
     week52Low: 110.00,
     badge: {
@@ -410,6 +475,7 @@ export const INITIAL_ASSETS: MarketAsset[] = [
     volume: '340K',
     week52High: 87.67,
     week52Low: 65.27,
+    rsi14: 43.1,
     badge: {
       text: 'CL',
       bgClass: 'bg-[#854d0e]',
@@ -435,6 +501,7 @@ export const INITIAL_ASSETS: MarketAsset[] = [
     volume: '210K',
     week52High: 2942.50,
     week52Low: 1984.20,
+    rsi14: 67.2,
     badge: {
       text: 'GC',
       bgClass: 'bg-[#ca8a04]',
@@ -559,7 +626,8 @@ export const NEWS_ITEMS: NewsItem[] = [
     sentiment: 'bullish',
     relatedSymbols: ['NVDA', 'Nasdaq 100', 'MSFT'],
     summary: 'The chipmaker announced landmark developments in datacenter accelerated computing, exceeding analyst forecasts on hyperscaler order volume.',
-    readTime: '3 min'
+    readTime: '3 min',
+    impactScore: 9
   },
   {
     id: 'news-2',
@@ -570,7 +638,8 @@ export const NEWS_ITEMS: NewsItem[] = [
     sentiment: 'neutral',
     relatedSymbols: ['S&P 500', 'US 10Y', 'EUR/USD'],
     summary: 'Policymakers noted inflation progress while emphasizing commitment to quantitative equilibrium before initiating further benchmark easing.',
-    readTime: '4 min'
+    readTime: '4 min',
+    impactScore: 8
   },
   {
     id: 'news-3',
@@ -581,7 +650,8 @@ export const NEWS_ITEMS: NewsItem[] = [
     sentiment: 'bullish',
     relatedSymbols: ['BTC/USD', 'ETH/USD', 'SOL/USD'],
     summary: 'Spot digital asset ETFs recorded over $1.2B in net weekly creations as sovereign wealth and asset managers broaden portfolio allocations.',
-    readTime: '2 min'
+    readTime: '2 min',
+    impactScore: 9
   },
   {
     id: 'news-4',
@@ -592,7 +662,8 @@ export const NEWS_ITEMS: NewsItem[] = [
     sentiment: 'bullish',
     relatedSymbols: ['DAX', 'UKX', 'NI225'],
     summary: 'Eurozone equities found renewed momentum following stabilization in energy export figures and stronger manufacturing outlooks.',
-    readTime: '3 min'
+    readTime: '3 min',
+    impactScore: 7
   },
   {
     id: 'news-5',
@@ -603,7 +674,8 @@ export const NEWS_ITEMS: NewsItem[] = [
     sentiment: 'bearish',
     relatedSymbols: ['Crude Oil', 'Gold'],
     summary: 'WTI futures eased under $72 per barrel after EIA weekly petroleum status report revealed larger than anticipated commercial stockpiles.',
-    readTime: '3 min'
+    readTime: '3 min',
+    impactScore: 6
   }
 ];
 
@@ -616,7 +688,8 @@ export const MARKET_STATUSES: MarketStatus[] = [
     flag: '🇺🇸',
     status: 'open',
     localTime: '09:40 AM EST',
-    tradingHours: '09:30 - 16:00 EST'
+    tradingHours: '09:30 - 16:00 EST',
+    volatilityIndex: 'VIX: 13.84 (-0.42)'
   },
   {
     market: 'London Stock Exchange',
@@ -626,7 +699,8 @@ export const MARKET_STATUSES: MarketStatus[] = [
     flag: '🇬🇧',
     status: 'open',
     localTime: '14:40 GMT',
-    tradingHours: '08:00 - 16:30 GMT'
+    tradingHours: '08:00 - 16:30 GMT',
+    volatilityIndex: 'VFTSE: 12.10'
   },
   {
     market: 'Tokyo Stock Exchange',
@@ -636,7 +710,8 @@ export const MARKET_STATUSES: MarketStatus[] = [
     flag: '🇯🇵',
     status: 'closed',
     localTime: '23:40 JST',
-    tradingHours: '09:00 - 15:30 JST'
+    tradingHours: '09:00 - 15:30 JST',
+    volatilityIndex: 'JNIV: 18.20'
   },
   {
     market: 'Hong Kong Exchanges',
@@ -646,7 +721,8 @@ export const MARKET_STATUSES: MarketStatus[] = [
     flag: '🇭🇰',
     status: 'closed',
     localTime: '22:40 HKT',
-    tradingHours: '09:30 - 16:00 HKT'
+    tradingHours: '09:30 - 16:00 HKT',
+    volatilityIndex: 'VHSI: 22.40'
   },
   {
     market: 'Global Crypto & FX',
@@ -656,7 +732,8 @@ export const MARKET_STATUSES: MarketStatus[] = [
     flag: '🌐',
     status: '24/7',
     localTime: 'Live Realtime',
-    tradingHours: '24 Hours / 7 Days'
+    tradingHours: '24 Hours / 7 Days',
+    volatilityIndex: 'BVOL: 52.1%'
   }
 ];
 
@@ -700,10 +777,43 @@ export const ECONOMIC_EVENTS: EconomicEvent[] = [
   }
 ];
 
-// Helper to generate realistic candle bars for the chart modal
-export function generateCandles(basePrice: number, timeframe: string, count: number = 36): CandleData[] {
+// Helper to generate realistic Level 2 Order Book entries
+export function generateOrderBook(currentPrice: number): { bids: OrderBookEntry[]; asks: OrderBookEntry[] } {
+  const bids: OrderBookEntry[] = [];
+  const asks: OrderBookEntry[] = [];
+  const spread = currentPrice * 0.0004;
+
+  let cumBidTotal = 0;
+  for (let i = 1; i <= 6; i++) {
+    const price = currentPrice - spread * i;
+    const size = Math.floor(Math.random() * 450) + 50;
+    cumBidTotal += size;
+    bids.push({
+      price: Number(price.toFixed(currentPrice < 5 ? 4 : 2)),
+      size,
+      total: cumBidTotal
+    });
+  }
+
+  let cumAskTotal = 0;
+  for (let i = 1; i <= 6; i++) {
+    const price = currentPrice + spread * i;
+    const size = Math.floor(Math.random() * 450) + 50;
+    cumAskTotal += size;
+    asks.push({
+      price: Number(price.toFixed(currentPrice < 5 ? 4 : 2)),
+      size,
+      total: cumAskTotal
+    });
+  }
+
+  return { bids, asks };
+}
+
+// Generate realistic technical indicator-loaded candle bars
+export function generateCandles(basePrice: number, timeframe: string, count: number = 42): CandleData[] {
   const candles: CandleData[] = [];
-  let currentPrice = basePrice * 0.94;
+  let currentPrice = basePrice * 0.93;
   const now = Date.now();
   
   const stepMinutes = timeframe === '1D' ? 15 : timeframe === '5D' ? 60 : timeframe === '1M' ? 360 : timeframe === '6M' ? 1440 : 2880;
@@ -715,12 +825,12 @@ export function generateCandles(basePrice: number, timeframe: string, count: num
       ? dateObj.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
       : `${dateObj.getMonth() + 1}/${dateObj.getDate()}`;
 
-    const delta = (Math.random() - 0.48) * (basePrice * 0.012);
+    const delta = (Math.random() - 0.47) * (basePrice * 0.014);
     const open = currentPrice;
-    const close = Math.max(open + delta, basePrice * 0.5);
-    const high = Math.max(open, close) + Math.random() * (basePrice * 0.006);
-    const low = Math.min(open, close) - Math.random() * (basePrice * 0.006);
-    const volume = Math.floor(Math.random() * 50000) + 10000;
+    const close = Math.max(open + delta, basePrice * 0.4);
+    const high = Math.max(open, close) + Math.random() * (basePrice * 0.007);
+    const low = Math.min(open, close) - Math.random() * (basePrice * 0.007);
+    const volume = Math.floor(Math.random() * 60000) + 12000;
 
     candles.push({
       time: timeStr,
@@ -735,10 +845,28 @@ export function generateCandles(basePrice: number, timeframe: string, count: num
     currentPrice = close;
   }
 
-  // Adjust final candle close to match basePrice
   if (candles.length > 0) {
     candles[candles.length - 1].close = basePrice;
   }
+
+  // Calculate EMA 20 & SMA 50
+  let ema = candles[0].close;
+  const k = 2 / (20 + 1);
+
+  candles.forEach((c, idx) => {
+    ema = c.close * k + ema * (1 - k);
+    c.ema20 = Number(ema.toFixed(2));
+
+    // SMA 50
+    const startIdx = Math.max(0, idx - 14);
+    const subset = candles.slice(startIdx, idx + 1);
+    const sma = subset.reduce((acc, val) => acc + val.close, 0) / subset.length;
+    c.sma50 = Number(sma.toFixed(2));
+
+    // Simulated RSI between 30 and 78
+    const rsiVal = 50 + Math.sin(idx * 0.4) * 18 + ((c.close - c.open) / c.open) * 80;
+    c.rsi = Number(Math.min(Math.max(rsiVal, 22), 85).toFixed(1));
+  });
 
   return candles;
 }

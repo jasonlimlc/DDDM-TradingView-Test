@@ -8,9 +8,13 @@ import {
   MarketAsset,
   MarketCategory,
   MarketRegion,
+  Position,
 } from './types';
 import { INITIAL_ASSETS } from './data/marketData';
 import { Header } from './components/Header';
+import { ProTickerTape } from './components/ProTickerTape';
+import { MarketBreadthBar } from './components/MarketBreadthBar';
+import { SectorHeatmap } from './components/SectorHeatmap';
 import { MarketsHeader } from './components/MarketsHeader';
 import { CategoryTabs } from './components/CategoryTabs';
 import { IndicesGrid } from './components/IndicesGrid';
@@ -33,12 +37,42 @@ export default function App() {
   const [selectedRegion, setSelectedRegion] = useState<MarketRegion>('All');
 
   // Interactive toggle: exact screenshot replica mode vs live interactive mode
-  const [isMockScreenshotMode, setIsMockScreenshotMode] = useState<boolean>(true);
+  const [isMockScreenshotMode, setIsMockScreenshotMode] = useState<boolean>(false);
   const [liveUpdatesEnabled, setLiveUpdatesEnabled] = useState<boolean>(true);
 
-  // Asset Dataset & Watchlist
+  // Asset Dataset & Watchlist & User Open Positions
   const [assets, setAssets] = useState<MarketAsset[]>(INITIAL_ASSETS);
-  const [watchlist, setWatchlist] = useState<string[]>(['sp500', 'nvda', 'aapl', 'btc']);
+  const [watchlist, setWatchlist] = useState<string[]>(['sp500', 'nvda', 'aapl', 'btc', 'sol']);
+  const [positions, setPositions] = useState<Position[]>([
+    {
+      id: 'pos-1',
+      assetId: 'nvda',
+      symbol: 'NVIDIA',
+      name: 'NVIDIA Corporation',
+      type: 'BUY',
+      entryPrice: 135.20,
+      currentPrice: 142.85,
+      shares: 50,
+      totalInvested: 6760.00,
+      unrealizedPnL: 382.50,
+      unrealizedPnLPercent: 5.65,
+      openDate: 'Today 09:35',
+    },
+    {
+      id: 'pos-2',
+      assetId: 'btc',
+      symbol: 'BTC/USD',
+      name: 'Bitcoin',
+      type: 'BUY',
+      entryPrice: 94500.00,
+      currentPrice: 96420.00,
+      shares: 0.15,
+      totalInvested: 14175.00,
+      unrealizedPnL: 288.00,
+      unrealizedPnLPercent: 2.03,
+      openDate: 'Today 10:12',
+    }
+  ]);
 
   // Modals & Drawers
   const [selectedAsset, setSelectedAsset] = useState<MarketAsset | null>(null);
@@ -54,9 +88,9 @@ export default function App() {
       setAssets((prevAssets) =>
         prevAssets.map((asset) => {
           // 40% chance of an asset updating each cycle for realistic market rhythm
-          if (Math.random() > 0.4) return asset;
+          if (Math.random() > 0.45) return asset;
 
-          const percentDelta = (Math.random() - 0.49) * 0.4;
+          const percentDelta = (Math.random() - 0.49) * 0.35;
           const priceChange = asset.price * (percentDelta / 100);
           const newPrice = Math.max(asset.price + priceChange, 0.001);
           const newChange = asset.change + priceChange;
@@ -75,10 +109,29 @@ export default function App() {
           };
         })
       );
+
+      // Sync active positions with live market prices
+      setPositions((prevPos) =>
+        prevPos.map((pos) => {
+          const match = assets.find((a) => a.id === pos.assetId);
+          if (!match) return pos;
+          const curPrice = match.price;
+          const pnl = pos.type === 'BUY' 
+            ? (curPrice - pos.entryPrice) * pos.shares 
+            : (pos.entryPrice - curPrice) * pos.shares;
+          const pnlPercent = (pnl / pos.totalInvested) * 100;
+          return {
+            ...pos,
+            currentPrice: curPrice,
+            unrealizedPnL: pnl,
+            unrealizedPnLPercent: pnlPercent,
+          };
+        })
+      );
     }, 2800);
 
     return () => clearInterval(interval);
-  }, [liveUpdatesEnabled]);
+  }, [liveUpdatesEnabled, assets]);
 
   // Keep selectedAsset synced if price updates
   useEffect(() => {
@@ -95,6 +148,11 @@ export default function App() {
     setWatchlist((prev) =>
       prev.includes(assetId) ? prev.filter((id) => id !== assetId) : [...prev, assetId]
     );
+  }, []);
+
+  // New Position execution handler
+  const handleOpenPosition = useCallback((newPos: Position) => {
+    setPositions((prev) => [newPos, ...prev]);
   }, []);
 
   // Handler to open asset modal by symbol
@@ -132,6 +190,12 @@ export default function App() {
         onToggleLiveUpdates={() => setLiveUpdatesEnabled(!liveUpdatesEnabled)}
       />
 
+      {/* Pro Live Ticker Tape Marquee */}
+      <ProTickerTape
+        assets={assets}
+        onSelectAsset={(asset) => setSelectedAsset(asset)}
+      />
+
       {/* Main Content Area */}
       <main className="w-full max-w-5xl mx-auto px-4 md:px-8 pt-4 flex-1 flex flex-col gap-6">
         {activeNavTab === 'markets' && (
@@ -144,13 +208,16 @@ export default function App() {
               onToggleMockScreenshotMode={() => setIsMockScreenshotMode(!isMockScreenshotMode)}
             />
 
+            {/* Pro Market Breadth & Sentiment Indicator */}
+            <MarketBreadthBar assets={assets} />
+
             {/* Navigation Tabs (Indices, Stocks, Crypto, Futures, Forex, Bonds) */}
             <CategoryTabs
               selectedCategory={selectedCategory}
               onSelectCategory={(cat) => setSelectedCategory(cat)}
             />
 
-            {/* If 'indices' tab is selected -> show the exact 3 sections from the screenshot */}
+            {/* If 'indices' tab is selected -> show the primary sections */}
             {selectedCategory === 'indices' && (
               <div className="flex flex-col gap-8">
                 {/* Section 1: Indices Grid (S&P 500, Nasdaq 100) */}
@@ -173,27 +240,43 @@ export default function App() {
                   onSelectAsset={(asset) => setSelectedAsset(asset)}
                   isMockScreenshotMode={isMockScreenshotMode}
                 />
+
+                {/* Pro Sector Treemap Heatmap */}
+                <SectorHeatmap
+                  assets={filteredAssets}
+                  onSelectAsset={(asset) => setSelectedAsset(asset)}
+                />
               </div>
             )}
 
             {/* If any other category is selected (Stocks, Crypto, Futures, Forex, Bonds) */}
             {selectedCategory !== 'indices' && (
-              <CategoryAssetsSection
-                category={selectedCategory}
-                assets={filteredAssets}
-                onSelectAsset={(asset) => setSelectedAsset(asset)}
-                watchlist={watchlist}
-                onToggleWatchlist={handleToggleWatchlist}
-              />
+              <div className="flex flex-col gap-6">
+                <CategoryAssetsSection
+                  category={selectedCategory}
+                  assets={filteredAssets}
+                  onSelectAsset={(asset) => setSelectedAsset(asset)}
+                  watchlist={watchlist}
+                  onToggleWatchlist={handleToggleWatchlist}
+                />
+
+                {selectedCategory === 'stocks' && (
+                  <SectorHeatmap
+                    assets={filteredAssets}
+                    onSelectAsset={(asset) => setSelectedAsset(asset)}
+                  />
+                )}
+              </div>
             )}
           </>
         )}
 
-        {/* Watchlist View */}
+        {/* Watchlist & Portfolio View */}
         {activeNavTab === 'watchlist' && (
           <WatchlistView
             assets={assets}
             watchlistIds={watchlist}
+            positions={positions}
             onToggleWatchlist={handleToggleWatchlist}
             onSelectAsset={(asset) => setSelectedAsset(asset)}
             onOpenSearch={() => setIsSearchOpen(true)}
@@ -253,12 +336,13 @@ export default function App() {
         }}
       />
 
-      {/* Detailed Asset Chart & Statistics Modal */}
+      {/* Detailed Pro Asset Chart, Level 2 Depth & Trade Execution Modal */}
       <AssetDetailModal
         asset={selectedAsset}
         onClose={() => setSelectedAsset(null)}
         isWatchlisted={selectedAsset ? watchlist.includes(selectedAsset.id) : false}
         onToggleWatchlist={handleToggleWatchlist}
+        onOpenPosition={handleOpenPosition}
       />
 
       {/* Bottom Navigation Bar */}

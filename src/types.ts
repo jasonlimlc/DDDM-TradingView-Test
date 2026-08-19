@@ -4,6 +4,10 @@ export type MarketRegion = 'All' | 'Americas' | 'Europe' | 'Asia-Pacific' | 'Glo
 
 export type ChartTimeframe = '1D' | '5D' | '1M' | '6M' | '1Y' | 'ALL';
 
+export type ChartMode = 'line' | 'candles' | 'area' | 'heikin-ashi';
+
+export type TechnicalIndicator = 'EMA20' | 'SMA50' | 'RSI' | 'MACD' | 'VOL_DELTA';
+
 export interface CandleData {
   time: string;
   timestamp: number;
@@ -12,6 +16,16 @@ export interface CandleData {
   low: number;
   close: number;
   volume: number;
+  ema20?: number;
+  sma50?: number;
+  rsi?: number;
+  macd?: { macd: number; signal: number; hist: number };
+}
+
+export interface OrderBookEntry {
+  price: number;
+  size: number;
+  total: number;
 }
 
 export interface MarketAsset {
@@ -30,6 +44,7 @@ export interface MarketAsset {
   openPrice: number;
   volume: string;
   marketCap?: string;
+  marketCapRaw?: number; // in billions
   peRatio?: number;
   dividendYield?: string;
   week52High?: number;
@@ -44,6 +59,25 @@ export interface MarketAsset {
   description: string;
   sector?: string;
   isFeatured?: boolean;
+  rsi14?: number;
+  beta?: number;
+  analystRating?: 'Strong Buy' | 'Buy' | 'Hold' | 'Sell';
+  targetPrice?: number;
+}
+
+export interface Position {
+  id: string;
+  assetId: string;
+  symbol: string;
+  name: string;
+  type: 'BUY' | 'SELL';
+  entryPrice: number;
+  currentPrice: number;
+  shares: number;
+  totalInvested: number;
+  unrealizedPnL: number;
+  unrealizedPnLPercent: number;
+  openDate: string;
 }
 
 export interface NewsItem {
@@ -57,6 +91,7 @@ export interface NewsItem {
   summary: string;
   url?: string;
   readTime: string;
+  impactScore?: number; // 1-10
 }
 
 export interface MarketStatus {
@@ -68,6 +103,7 @@ export interface MarketStatus {
   status: 'open' | 'closed' | 'pre-market' | 'after-hours' | '24/7';
   localTime: string;
   tradingHours: string;
+  volatilityIndex?: string;
 }
 
 export interface EconomicEvent {
